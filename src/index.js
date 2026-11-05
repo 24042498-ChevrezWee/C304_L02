@@ -17,7 +17,7 @@ function Pizza({ image, name, desc, price }) {
       <div>
         <h3>{name}</h3>
         <p>{desc}</p>
-        <p>${price}</p>
+        <span>${price}</span>
       </div>
     </li>
   );
