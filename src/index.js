@@ -79,8 +79,7 @@ function Footer({ isOpen }) {
 }
 
 function App() {
-  //const hour = new Date().getHours();
-  const hour = 11;
+  const hour = new Date().getHours();
   const isOpen = hour >= 10 && hour < 22;
 
   const [favourites, setFavourites] = useState([]);
