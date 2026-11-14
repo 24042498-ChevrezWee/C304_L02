@@ -71,6 +71,13 @@ body {
   right: 0;
 }
 
+.header p {
+  margin-top: 1.6rem;
+  text-align: center;
+  font-size: 1.4rem;
+  font-style: italic;
+}
+
 /* *************** */
 
 .menu {
@@ -98,6 +105,14 @@ body {
   width: 80%;
 }
 
+.search {
+  width: 80%;
+  padding: 1rem;
+  border: 1px solid #edc84b;
+  background-color: #fff;
+  font-family: inherit;
+}
+
 .pizzas {
   list-style: none;
   display: grid;
@@ -116,7 +131,9 @@ body {
   align-self: start;
 }
 
-.pizza div {
+.pizza > div {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -149,6 +166,15 @@ body {
   opacity: 0.8;
 }
 
+.pizza-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-top: auto;
+  padding: 0;
+}
+
 /* *************** */
 
 .footer {
@@ -169,6 +195,7 @@ body {
   font-size: 1.4rem;
   font-weight: 500;
   background-color: #edc84b;
+  margin-top: 1.6rem;
   padding: 1.4rem 3.2rem;
   cursor: pointer;
   transition: all 0.2s;
@@ -178,6 +205,20 @@ body {
   background-color: #e9bb24;
 }
 
+.favourite-btn {
+  border: 1px solid #edc84b;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.2rem;
+  padding: 0.6rem 1rem;
+}
+
+.favourite-btn:hover {
+  background-color: #edc84b;
+}
+
 /*
 SPACING SYSTEM (px)
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 / 80 / 96 / 128
@@ -185,3 +226,32 @@ SPACING SYSTEM (px)
 FONT SIZE SYSTEM (px)
 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 /52 / 62 / 74 / 86 / 98
 */
+
+@media (max-width: 650px) {
+  body {
+    padding: 2rem;
+  }
+
+  .header h1 {
+    font-size: 3.6rem;
+    letter-spacing: 1px;
+  }
+
+  .header h1::before,
+  .header h1::after {
+    display: none;
+  }
+
+  .pizzas {
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+  }
+
+  .pizza {
+    gap: 1.6rem;
+  }
+
+  .pizza img {
+    width: 10rem;
+  }
+}

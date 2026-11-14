@@ -1,62 +1,105 @@
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import {pizzaData} from "./data";
 
-function Header() {
+function Header({isOpen}) {
   return (
     <header className="header">
-      <h1 style={{color: "orange", fontSize: "48px", textTransform: "uppercase"}}>Andy's Pizza Co.</h1>
+      <h1>Andy's Pizza Co.</h1>
+      
+      {isOpen && <p>Authentic Italian Cuisine</p>}
     </header>
   );
 }
 
-function Pizza({ image, name, desc, price }) {
+function Pizza({ pizza, isFavourite, onToggleFavourite }) {
+  const { name, ingredients, price, photoName, soldOut } = pizza;
+  const pizzaClass = soldOut ? "pizza sold-out" : "pizza";
   return (
-    <li className="pizza">
-      <img src={image} alt={name} />
+    <li className={pizzaClass}>
+      <img src={photoName} alt={name} />
       <div>
         <h3>{name}</h3>
-        <p>{desc}</p>
-        <span>${price}</span>
+        <p>{ingredients}</p>
+
+        <div className="pizza-bottom">
+          {soldOut ? (<span>Sold Out</span>) : (<span>${price}</span>)}
+
+          <button className="favourite-btn" type="button" onClick={() => onToggleFavourite(name)}>
+            {isFavourite ? "Unfavourite" : "Favourite"}
+          </button>
+        </div>
       </div>
     </li>
   );
 }
 
-function Menu() {
+function Menu({ favourites, onToggleFavourite }) {
+  const [search, setSearch] = useState("");
+
+  const filteredPizzas = pizzaData.filter((pizza) =>
+    pizza.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <main className="menu">
       <h2>Our Menu</h2>
+      <p>Fresh ingredients, handmade dough, and pizzas prepared with care.</p>
+
+      <input className="search" type="text" placeholder="Search pizzas" value={search} onChange={(event) => setSearch(event.target.value)} />
 
       <ul className="pizzas">
-        <Pizza image="/pizzas/spinaci.jpg" name="Spinach Pizza" desc="Tomato, mozzarella, spinach, and ricotta cheese." price={10} />
-        <Pizza image="/pizzas/margherita.jpg" name="Margherita Pizza" desc="Tomato, mozzarella, and basil." price={12} />
-        <Pizza image="/pizzas/focaccia.jpg" name="Focaccia Pizza" desc="Tomato, mozzarella, and focaccia bread." price={14} />
-        <Pizza image="/pizzas/funghi.jpg" name="Funghi Pizza" desc="Tomato, mozzarella, and mushrooms." price={16} />
-        <Pizza image="/pizzas/prosciutto.jpg" name="Prosciutto Pizza" desc="Tomato, mozzarella, and prosciutto." price={18} />
-        <Pizza image="/pizzas/salamino.jpg" name="Salamino Pizza" desc="Tomato, mozzarella, and salami." price={20} />
+        {filteredPizzas.map((pizza) => (
+          <Pizza key={pizza.name} pizza={pizza} isFavourite={favourites.includes(pizza.name)} onToggleFavourite={onToggleFavourite} />
+        ))}
       </ul>
     </main>
   );
 }
 
-function Footer() {
-  const hour = new Date().getHours();
-  const isOpen = hour >= 10 && hour < 22;
+function Order() {
+  function handleOrder() {
+    alert("Order placed!");
+  }
 
   return (
+    <div className="order">
+      <button className="btn" type="button" onClick={handleOrder}>Order</button>
+    </div>
+  );
+}
+
+function Footer({ isOpen }) {
+  return (
     <footer className="footer">
-      {isOpen ? "We're currently open" : "Sorry we're closed"}
+      {isOpen ? (<><p>We're currently open</p><Order /></>) : (<p>Sorry we're closed</p>)}
     </footer>
   );
 }
 
 function App() {
+  //const hour = new Date().getHours();
+  const hour = 11;
+  const isOpen = hour >= 10 && hour < 22;
+
+  const [favourites, setFavourites] = useState([]);
+
+  function handleToggleFavourite(pizzaName) {
+    setFavourites((currentFavourites) => {
+      if (currentFavourites.includes(pizzaName)) {
+        return currentFavourites.filter((name) => name !== pizzaName);
+      }
+      
+      return [...currentFavourites, pizzaName];
+    });
+  };
+
   return (
     <div className="container">
-      <Header />
-      <Menu />
-      <Footer />
+      <Header isOpen={isOpen} />
+      <Menu favourites={favourites} onToggleFavourite={handleToggleFavourite} />
+      <Footer isOpen={isOpen} />
     </div>
   );
 }
